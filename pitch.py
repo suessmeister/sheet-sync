@@ -12,6 +12,7 @@ FRAMES_PER_BUFFER = 1024
 WINDOW_SIZE = 4096
 HOP_SIZE = FRAMES_PER_BUFFER
 
+
 audio = pyaudio.PyAudio()
 
 stream = audio.open(
@@ -27,22 +28,26 @@ pitcher = aubio.pitch(
     "default", WINDOW_SIZE, HOP_SIZE, RATE
 )  # create aubio pitch detection
 pitcher.set_unit("Hz")  # set output unit, can be midi, cent, Hz
-pitcher.set_silence(-20)  # ignore frames under this level, iqn db
+pitcher.set_silence(-1000)
+# ignore frames under this level, in db
+
 print("listening...")
 
-try:
-    while True:
+
+while True:
+    try:
         data = stream.read(FRAMES_PER_BUFFER)
         samples = np.frombuffer(data, dtype=np.float32)
-        freq = pitcher(samples)[0]
-        if freq > 0.0:
-            print(freq)
-        if keyboard.is_pressed("space"):
-            print("quitting...")
-            break
+        pitch = pitcher(samples)[0]
+        if pitch > 0.0:
+            print(pitch)
+    except keyboard.is_pressed("space"):
+        print("quitting...")
+    except IOError as e:
+        print(f"error reading from stream: {e}")
+    break
 
-
-finally:
-    stream.stop_stream()
-    audio.terminate()
-    stream.close()
+print("quitting...")
+stream.stop_stream()
+stream.close()
+audio.terminate()

@@ -28,16 +28,16 @@ def frequency_demo_aubio():
         frames_per_buffer=buffer_size,
     )
 
-    if len(sys.argv) > 1:
-        # record 5 seconds
-        output_filename = sys.argv[1]
-        record_duration = 5  # exit 1
-        outputsink = aubio.sink(sys.argv[1], samplerate)
-        total_frames = 0
-    else:
-        # run forever
-        outputsink = None
-        record_duration = None
+    # if len(sys.argv) > 1:
+    #     # record 5 seconds
+    #     output_filename = sys.argv[1]
+    #     record_duration = 5  # exit 1
+    #     outputsink = aubio.sink(sys.argv[1], samplerate)
+    #     total_frames = 0
+    # else:
+    #     # run forever
+    #     outputsink = None
+    #     record_duration = None
 
     # setup pitch
     tolerance = 0.8
@@ -45,7 +45,7 @@ def frequency_demo_aubio():
     hop_s = buffer_size  # hop size
     pitch_o = aubio.pitch("default", win_s, hop_s, samplerate)
     pitch_o.set_unit("Hz")
-    pitch_o.set_tolerance(tolerance)
+    # pitch_o.set_tolerance(tolerance)
 
     print("*** starting recording")
     while True:
@@ -58,16 +58,16 @@ def frequency_demo_aubio():
 
             print("{} / {}".format(pitch, confidence))
 
-            if outputsink:
-                outputsink(signal, len(signal))
+            # if outputsink:
+            #     outputsink(signal, len(signal))
 
-            if record_duration:
-                total_frames += len(signal)
-                if record_duration * samplerate < total_frames:
-                    break
+            # if record_duration:
+            #     total_frames += len(signal)
+            #     # if record_duration * samplerate < total_frames:
+            #     #     break
         except KeyboardInterrupt:
             print("*** Ctrl+C pressed, exiting")
-        break
+            break
 
     print("*** done recording")
     stream.stop_stream()
