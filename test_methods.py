@@ -2,6 +2,7 @@ import pyaudio
 import sys
 import aubio
 import numpy as np
+from tkinter import *
 
 
 def test_input_devices():
@@ -75,9 +76,48 @@ def frequency_demo_aubio():
     p.terminate()
 
 
+def click_button_tkinter_1():
+
+    # if you want to submit a form or whatever, this is a great tool!
+    root = Tk()
+
+    def click_handler():
+        myLabel = Label(root, text="Clicked!!")
+        myLabel.pack()
+
+    # we do not use the paranthesis for command buttons!
+    button = Button(
+        root, text="click Me!", command=click_handler, fg="blue", bg="green"
+    )
+    button.pack()
+
+    root.mainloop()
+
+
+def input_box_tkinter_2():
+    root = Tk()
+
+    entry = Entry(root, width=50, bg="yellow")
+    entry.pack()
+    entry.insert(0, "Enter name? ")  # puts text inside input box
+
+    def click_handler():
+        label = Label(
+            root, text="Hello " + entry.get()
+        )  # entry get will get the input in the box
+        label.pack()
+
+    button = Button(root, text="click me ", command=click_handler)
+    button.pack()
+
+    root.mainloop()
+
+
 def driver():
-    frequency_demo_aubio()
+    # frequency_demo_aubio()
     # test_input_devices()
+    # click_button_tkinter_1()
+    input_box_tkinter_2()
 
 
 driver()

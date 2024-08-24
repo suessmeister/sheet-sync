@@ -1,7 +1,14 @@
+# Trying to use as little libraries as possible to complete the project! Need to beat the Python Developer Stereotype....
+
+# Absolutely required libraries. In other words, WE NEED THESE!
 import pyaudio  # allows us to work with audio in python and will be for recording
-import keyboard
 import aubio
 import numpy as np
+
+# Libraries that are still undecided.
+from tkinter import *
+
+# Libraries just for fun, either for testing purposes or else.
 
 
 FORMAT = pyaudio.paFloat32
@@ -40,8 +47,9 @@ while True:
         pitch = pitcher(samples)[0]
         if pitch > 0.0:
             print(pitch)
-        if keyboard.is_pressed("space"):
-            break
+    except KeyboardInterrupt:
+        print("ctrl-c pressed. stopping... ")
+        break
     except IOError as e:
         print(f"error reading from stream: {e}")
         break
