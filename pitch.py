@@ -28,8 +28,7 @@ pitcher = aubio.pitch(
     "default", WINDOW_SIZE, HOP_SIZE, RATE
 )  # create aubio pitch detection
 pitcher.set_unit("Hz")  # set output unit, can be midi, cent, Hz
-pitcher.set_silence(-1000)
-# ignore frames under this level, in db
+pitcher.set_silence(-25)  # ignore frames under this level, in db
 
 print("listening...")
 
@@ -41,11 +40,11 @@ while True:
         pitch = pitcher(samples)[0]
         if pitch > 0.0:
             print(pitch)
-    except keyboard.is_pressed("space"):
-        print("quitting...")
+        if keyboard.is_pressed("space"):
+            break
     except IOError as e:
         print(f"error reading from stream: {e}")
-    break
+        break
 
 print("quitting...")
 stream.stop_stream()
